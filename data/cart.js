@@ -1,3 +1,5 @@
+import { deliveryOptions } from "./deliveryOptions.js";
+
 export let cart;
 
 loadFromStorage();
@@ -59,6 +61,9 @@ export function updateQuantity(productId, newQuantity) {
 }
 
 export function removeFromCart(productId) {
+  const productExists = cart.some((cartItem) => cartItem.productId === productId);
+  if (!productExists) return;
+
   cart = cart.filter((cartItem) => cartItem.productId !== productId);
 
   saveToStorage();
@@ -75,6 +80,11 @@ export function calculateCartQuantity() {
 }
 
 export function updateDeliveryOption(productId, deliveryOptionId) {
+  const productExists = cart.some((cartItem) => cartItem.productId === productId);
+  const deliveryOptionExists = deliveryOptions.some((deliveryOption) => deliveryOption.id === deliveryOptionId);
+
+  if (!productExists || !deliveryOptionExists) return;
+
   let matchingItem;
 
   cart.forEach((cartItem) => {
