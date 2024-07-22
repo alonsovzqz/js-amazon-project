@@ -5,13 +5,17 @@ import { loadProducts, loadProductsFetch } from "../data/products.js";
 import { loadCart } from "../data/cart.js";
 
 async function loadPage() {
-  await loadProductsFetch();
+  try {
+    await loadProductsFetch();
 
-  const value = await new Promise((resolve) => {
-    loadCart(() => {
-      resolve();
+    const value = await new Promise((resolve) => {
+      loadCart(() => {
+        resolve();
+      });
     });
-  });
+  } catch (error) {
+    console.log("Unexpected error. Try again later.");
+  }
 
   renderCheckoutHeader();
   renderOrderSummary();
